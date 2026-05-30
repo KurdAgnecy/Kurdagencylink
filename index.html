@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="ku" dir="rtl" class="dark">
+<html lang="ku" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KurdAgencyLink | Pro Admin</title>
+    <title>KurdAgencyLink | پڕۆ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
         body { font-family: 'Vazirmatn', sans-serif; transition: 0.3s; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .dark { background-color: #050505; color: white; }
+        .light { background-color: #f8fafc; color: #1e293b; }
+        
+        /* Social Colors */
         .btn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important; color: white !important; }
         .btn-facebook { background: #1877F2 !important; color: white !important; }
         .btn-tiktok { background: #000000 !important; color: white !important; border: 1px solid #ff0050 !important; }
@@ -17,76 +21,65 @@
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-link { background: #6366f1 !important; color: white !important; }
 
-        /* Multi-Designs */
-        .theme-classic { background: #0a0a0a; color: white; }
-        .theme-modern { background: linear-gradient(135deg, #1e293b, #0f172a); color: #38bdf8; }
-        .theme-neon { background: #000; color: #39ff14; text-shadow: 0 0 5px #39ff14; }
-        .theme-royal { background: #1a1c2c; color: #fbbf24; border: 2px solid #fbbf24; }
-        .theme-clean { background: #f8fafc; color: #1e293b; }
-
-        /* Badges */
-        .badge-blue { color: #3b82f6; }
-        .badge-gold { color: #f59e0b; }
-        .badge-red { color: #ef4444; }
-        .badge-black { color: #000; background: #fff; border-radius: 50%; padding: 2px; }
+        /* Themes */
+        .theme-classic { background: #0a0a0a !important; color: white !important; }
+        .theme-modern { background: linear-gradient(135deg, #0f172a, #1e293b) !important; color: #38bdf8 !important; }
+        .theme-neon { background: #000 !important; color: #39ff14 !important; text-shadow: 0 0 8px #39ff14; }
+        .theme-royal { background: #1a1c2c !important; color: #fbbf24 !important; }
     </style>
-    <script>tailwind.config = { darkMode: 'class' }</script>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-[#050505] dark:text-gray-100 min-h-screen">
+<body class="dark min-h-screen">
 
-    <nav class="p-4 glass sticky top-0 z-[100] border-b dark:border-white/5 flex justify-between items-center">
+    <nav class="p-4 border-b border-white/5 flex justify-between items-center sticky top-0 bg-[#050505]/80 backdrop-blur-md z-50">
         <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg">K</div>
+            <div class="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center text-white font-bold">K</div>
             <span class="text-xl font-bold">KurdAgency<span class="text-green-500">Link</span></span>
         </div>
-        <div class="flex items-center gap-3">
-            <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-gray-200 dark:bg-white/5"><i class="fas fa-moon dark:hidden"></i><i class="fas fa-sun hidden dark:inline text-yellow-400"></i></button>
-            <button id="logout-btn" onclick="logout()" class="hidden px-4 py-2 bg-red-500 text-white rounded-xl text-xs font-bold">دەرچوون</button>
+        <div class="flex items-center gap-2">
+            <button onclick="toggleTheme()" class="p-2.5 rounded-xl bg-white/5"><i class="fas fa-adjust"></i></button>
+            <button id="logout-btn" onclick="logout()" class="hidden px-4 py-2 bg-red-500/20 text-red-500 rounded-xl text-xs font-bold">دەرچوون</button>
         </div>
     </nav>
 
     <main class="container mx-auto px-4 py-8">
-        
         <section id="auth-section" class="max-w-md mx-auto mt-10">
-            <div class="bg-white dark:bg-[#0d0d0d] p-8 rounded-[2.5rem] shadow-2xl border dark:border-white/5">
-                <div class="flex bg-gray-100 dark:bg-white/5 p-1.5 rounded-2xl mb-8">
-                    <button onclick="showAuth('login')" id="tab-login" class="flex-1 py-3 rounded-xl font-bold text-sm bg-green-500 text-white shadow-lg">چوونەژوورەوە</button>
-                    <button onclick="showAuth('reg')" id="tab-reg" class="flex-1 py-3 rounded-xl font-bold text-sm opacity-50">تۆمارکردن</button>
+            <div class="bg-[#0d0d0d] p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
+                <div class="flex bg-white/5 p-1 rounded-2xl mb-8">
+                    <button onclick="showAuth('login')" id="tab-login" class="flex-1 py-3 rounded-xl font-bold bg-green-500">چوونەژوورەوە</button>
+                    <button onclick="showAuth('reg')" id="tab-reg" class="flex-1 py-3 rounded-xl font-bold opacity-50">تۆمارکردن</button>
                 </div>
                 <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
-                    <input type="text" id="l-user" placeholder="ئیمێڵ یان یوزەرنەیم" required class="w-full p-4 rounded-2xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                    <input type="password" id="l-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold shadow-xl">چوونەژوورەوە</button>
+                    <input type="text" id="l-user" placeholder="ئیمێڵ یان یوزەرنەیم" required class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
+                    <input type="password" id="l-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
+                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold shadow-lg">چوونەژوورەوە</button>
                 </form>
                 <form id="reg-form" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                    <input type="text" id="r-name" placeholder="ناوی تەواو" required class="w-full p-4 rounded-2xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                    <input type="text" id="r-user" placeholder="یوزەرنەیم (بە ئینگلیزی)" required class="w-full p-4 rounded-2xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                    <input type="password" id="r-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold shadow-xl">تۆمارکردن</button>
+                    <input type="text" id="r-name" placeholder="ناوی تەواو" required class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
+                    <input type="text" id="r-user" placeholder="یوزەرنەیم (بە ئینگلیزی)" required class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
+                    <input type="password" id="r-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
+                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold">تۆمارکردنی هەژمار</button>
                 </form>
             </div>
         </section>
 
         <section id="admin-panel" class="hidden max-w-5xl mx-auto space-y-6">
-            <div class="bg-gradient-to-l from-blue-600 to-indigo-700 p-8 rounded-[2.5rem] text-white flex justify-between items-center shadow-2xl">
+            <div class="bg-blue-600 p-8 rounded-[2.5rem] flex justify-between items-center shadow-xl">
                 <div>
-                    <h2 class="text-3xl font-black italic">کۆنتڕۆڵی گشتی ئاریان</h2>
-                    <p class="opacity-80">هەموو بەکارهێنەرەکان لێرە دەبینیت</p>
+                    <h2 class="text-2xl font-bold italic">کۆنتڕۆڵی ئاریان</h2>
+                    <p class="text-sm opacity-80">بەڕێوەبەری سەرەکی پڕۆژە</p>
                 </div>
-                <i class="fas fa-users-cog text-6xl opacity-20"></i>
+                <i class="fas fa-shield-alt text-5xl opacity-20"></i>
             </div>
-            <div class="glass p-8 rounded-[2.5rem]">
-                <div class="flex flex-col md:flex-row gap-4 mb-8">
-                    <input type="text" id="adm-search" oninput="searchAdmin()" placeholder="گەڕان بۆ هەژمارەکان (یوزەر، ناو، یان پاسۆرد)..." class="flex-1 p-4 rounded-2xl bg-white/5 border border-white/10 outline-none">
-                </div>
+            <div class="bg-white/5 p-6 rounded-[2.5rem] border border-white/10">
+                <input type="text" id="adm-search" oninput="searchAdmin()" placeholder="گەڕان بۆ یوزەرنەیم یان ناو..." class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 outline-none mb-6">
                 <div id="admin-list" class="grid md:grid-cols-2 gap-4"></div>
             </div>
         </section>
 
         <section id="user-panel" class="hidden grid lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
             <div class="space-y-6">
-                <div class="glass p-8 rounded-[2.5rem]">
-                    <h2 class="text-xl font-bold text-green-500 mb-6 flex items-center gap-2"><i class="fas fa-id-card"></i> پڕۆفایل</h2>
+                <div class="bg-white/5 p-8 rounded-[2.5rem] border border-white/10">
+                    <h2 class="text-xl font-bold text-green-500 mb-6 italic">دەستکاری پڕۆفایل</h2>
                     <div class="flex items-center gap-6 mb-6">
                         <input type="file" id="u-img-in" onchange="upImg(event)" class="hidden">
                         <label for="u-img-in" class="w-24 h-24 bg-green-500/10 rounded-full border-2 border-dashed border-green-500 flex items-center justify-center cursor-pointer overflow-hidden">
@@ -94,54 +87,55 @@
                             <i id="u-cam" class="fas fa-camera text-green-500 text-2xl"></i>
                         </label>
                         <div class="flex-1 space-y-3">
-                            <input type="text" id="u-name" oninput="live()" placeholder="ناوی پڕۆفایل" class="w-full p-3 rounded-xl border dark:bg-white/5 dark:border-white/10 outline-none">
-                            <textarea id="u-bio" oninput="live()" placeholder="بایۆ یان کارەکەت..." class="w-full p-3 rounded-xl border dark:bg-white/5 dark:border-white/10 outline-none h-16"></textarea>
+                            <input type="text" id="u-name" oninput="live()" placeholder="ناوەکەت لێرە بنوسە" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 outline-none">
+                            <textarea id="u-bio" oninput="live()" placeholder="بایۆ یان کارەکەت" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 outline-none h-16"></textarea>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <select id="u-theme" onchange="live()" class="p-3 rounded-xl dark:bg-[#151515] border dark:border-white/10 outline-none">
-                            <option value="theme-classic">کلاسیک</option><option value="theme-modern">مۆدێرن</option>
-                            <option value="theme-neon">نێۆن</option><option value="theme-royal">شاهانە</option>
+                        <select id="u-theme" onchange="live()" class="p-3 rounded-xl bg-[#151515] border border-white/10 outline-none text-xs">
+                            <option value="theme-classic">دیزاینی کلاسیک</option>
+                            <option value="theme-modern">دیزاینی مۆدێرن</option>
+                            <option value="theme-neon">دیزاینی نێۆن</option>
+                            <option value="theme-royal">دیزاینی شاهانە</option>
                         </select>
-                        <input type="range" id="u-size" min="60" max="150" value="100" oninput="live()" class="accent-green-500 mt-3">
+                        <input type="range" id="u-size" min="60" max="150" value="100" oninput="live()" class="accent-green-500">
                     </div>
                 </div>
 
-                <div class="glass p-8 rounded-[2.5rem]">
+                <div class="bg-white/5 p-8 rounded-[2.5rem] border border-white/10">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="font-bold text-green-500">بەستەرەکان</h2>
-                        <button onclick="addLink()" class="bg-green-500 text-white px-4 py-2 rounded-xl text-xs font-bold">+ زیادکردن</button>
+                        <h2 class="font-bold text-green-500 italic">لینکەکان</h2>
+                        <button onclick="addLink()" class="bg-green-500 text-white px-5 py-2 rounded-xl text-xs font-bold">+ زیادکردن</button>
                     </div>
                     <div id="links-editor" class="space-y-4"></div>
                 </div>
 
-                <div class="bg-indigo-600 p-8 rounded-[2.5rem] text-white shadow-xl relative overflow-hidden">
-                    <h3 class="text-xl font-bold italic">وەرگرتنی نیشانەی فەرمی (Verify)</h3>
-                    <p class="text-xs opacity-80 mt-2">بۆ چالاککردن بڕی 1,500 دینار بنێرە بۆ ئەم ژمارەیە:</p>
+                <div class="bg-indigo-600 p-8 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl">
+                    <h3 class="text-xl font-bold">وەرگرتنی سەح و نیشانە</h3>
+                    <p class="text-xs opacity-80 mt-2">بۆ چالاککردن بڕی ١,٥٠٠ دینار بنێرە بۆ ئەم ژمارەیە:</p>
                     <div class="mt-4 p-4 bg-white/10 rounded-2xl border border-white/20">
-                        <p class="font-mono font-bold text-xl">07729585559</p>
-                        <p class="text-[10px] mt-1 opacity-80">پارەدان تەنها: FIB یان FastPay</p>
+                        <p class="font-mono font-bold text-xl tracking-widest">07729585559</p>
+                        <p class="text-[10px] mt-1 font-bold">FIB یان FASTPAY</p>
                     </div>
-                    <a href="https://wa.me/9647729585559?text=سڵاو، ١٥٠٠ دینارم نارد بۆ سەح، ئەمەش وێنەی پسوڵەکەیە بۆ: " id="wa-link" target="_blank" class="block w-full text-center bg-white text-indigo-600 p-3 rounded-xl mt-4 font-bold text-xs">ناردنی سکرین (WhatsApp)</a>
-                    <i class="fas fa-certificate absolute -right-6 -bottom-6 text-9xl opacity-10"></i>
+                    <a href="https://wa.me/9647729585559?text=سڵاو، ١٥٠٠ دینارم نارد بۆ سەح، ئەمەش وێنەی پسوڵەکەیە بۆ یوزەری: " id="wa-link" target="_blank" class="block w-full text-center bg-white text-indigo-600 p-3 rounded-xl mt-4 font-bold text-xs">ناردنی سکرین (WhatsApp)</a>
                 </div>
 
-                <button onclick="genLink()" class="w-full bg-green-500 text-white p-6 rounded-[2.5rem] font-bold text-lg shadow-xl shadow-green-500/20">وەرگرتنی لینکی بایۆ</button>
-                <div id="copy-box" class="hidden mt-4 p-5 glass rounded-3xl border-2 border-dashed border-green-500 flex justify-between items-center">
+                <button onclick="genLink()" class="w-full bg-green-500 text-white p-6 rounded-[2.5rem] font-bold text-lg shadow-xl shadow-green-500/20">وەرگرتنی لینکی کۆتایی</button>
+                <div id="copy-box" class="hidden mt-4 p-5 bg-white/5 rounded-[2.5rem] border-2 border-dashed border-green-500 flex justify-between items-center">
                     <span id="final-url" class="text-xs font-bold text-green-500 truncate mr-4"></span>
-                    <button onclick="copyIt()" class="bg-green-500 text-white px-6 py-2 rounded-xl text-[10px] font-bold shrink-0">کۆپی</button>
+                    <button onclick="copyIt()" class="bg-green-500 px-6 py-2 rounded-xl text-[10px] font-bold shrink-0">کۆپی</button>
                 </div>
             </div>
 
             <div class="hidden lg:flex justify-center sticky top-28 h-fit">
-                <div class="w-[310px] h-[620px] bg-black rounded-[3.5rem] border-[10px] border-[#151515] shadow-2xl relative overflow-hidden">
+                <div class="w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-[#1a1a1a] shadow-2xl relative overflow-hidden">
                     <div id="pre-screen" class="w-full h-full p-8 flex flex-col items-center overflow-y-auto">
-                        <div class="mt-12 relative">
-                            <img id="pre-img" src="https://ui-avatars.com/api/?name=U" class="rounded-full shadow-xl object-cover">
+                        <div class="mt-10 relative">
+                            <img id="pre-img" src="https://ui-avatars.com/api/?name=User" class="rounded-full shadow-2xl object-cover">
                             <div id="pre-badge" class="hidden absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 border-black text-[10px]"></div>
                         </div>
-                        <h2 id="pre-name" class="font-bold text-lg mt-5">ناوی تۆ</h2>
-                        <p id="pre-bio" class="text-[10px] opacity-60 text-center mt-2"></p>
+                        <h2 id="pre-name" class="font-bold text-lg mt-5 text-center">ناوەکەت</h2>
+                        <p id="pre-bio" class="text-[10px] opacity-60 text-center mt-2 px-2"></p>
                         <div id="pre-links" class="w-full mt-10 space-y-4"></div>
                     </div>
                 </div>
@@ -150,19 +144,20 @@
 
         <section id="public-view" class="hidden max-w-md mx-auto py-12 flex flex-col items-center min-h-screen">
             <div class="relative">
-                <img id="v-img" src="" class="rounded-full shadow-2xl object-cover">
+                <img id="v-img" src="" class="rounded-full shadow-2xl border-4 border-white/10 object-cover">
                 <div id="v-badge" class="hidden absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center border-4 border-black"></div>
             </div>
-            <h1 id="v-name" class="mt-8 text-2xl font-bold"></h1>
-            <p id="v-bio" class="text-sm opacity-60 text-center mt-4 px-10"></p>
+            <h1 id="v-name" class="mt-6 text-2xl font-bold"></h1>
+            <p id="v-bio" class="text-sm opacity-60 text-center mt-4 px-10 leading-relaxed"></p>
             <div id="v-links" class="w-full mt-10 space-y-4 px-6"></div>
+            <div class="mt-auto py-10 opacity-20 text-[10px] font-bold tracking-[0.5em]">KURD AGENCY LINK</div>
         </section>
-
     </main>
 
     <script>
-        let db = JSON.parse(localStorage.getItem('KAL_MEGA_DB')) || {};
-        let activeUser = localStorage.getItem('KAL_SESSION') || null;
+        // Database
+        let db = JSON.parse(localStorage.getItem('KAL_FINAL_DB')) || {};
+        let activeUser = localStorage.getItem('KAL_ACTIVE_SESSION') || null;
 
         const platforms = {
             instagram: { name: 'ئینستاگرام', icon: 'fab fa-instagram', cls: 'btn-instagram' },
@@ -181,28 +176,37 @@
         };
 
         const params = new URLSearchParams(window.location.search);
-        const uParam = params.get('u');
+        const u = params.get('u');
 
-        if (uParam && db[uParam]) renderPublic(uParam);
+        // Router
+        if (u && db[u]) renderPublic(u);
         else if (activeUser === 'aryan@gmail.com') showAdmin();
         else if (activeUser && db[activeUser]) showDashboard();
 
-        function save() { localStorage.setItem('KAL_MEGA_DB', JSON.stringify(db)); if(activeUser) localStorage.setItem('KAL_SESSION', activeUser); }
-        function toggleTheme() { document.documentElement.classList.toggle('dark'); }
+        function save() { 
+            localStorage.setItem('KAL_FINAL_DB', JSON.stringify(db)); 
+            if(activeUser) localStorage.setItem('KAL_ACTIVE_SESSION', activeUser);
+        }
+
+        function toggleTheme() { document.body.classList.toggle('dark'); document.body.classList.toggle('light'); }
 
         function showAuth(t) {
             document.getElementById('login-form').classList.toggle('hidden', t==='reg');
             document.getElementById('reg-form').classList.toggle('hidden', t==='login');
-            document.getElementById('tab-login').className = t==='login' ? 'flex-1 py-3 rounded-xl font-bold bg-green-500 text-white' : 'flex-1 opacity-50 font-bold';
-            document.getElementById('tab-reg').className = t==='reg' ? 'flex-1 py-3 rounded-xl font-bold bg-green-500 text-white' : 'flex-1 opacity-50 font-bold';
+            document.getElementById('tab-login').className = t==='login' ? 'flex-1 py-3 rounded-xl font-bold bg-green-500' : 'flex-1 opacity-50 font-bold';
+            document.getElementById('tab-reg').className = t==='reg' ? 'flex-1 py-3 rounded-xl font-bold bg-green-500' : 'flex-1 opacity-50 font-bold';
         }
 
         function handleRegister(e) {
             e.preventDefault();
-            const u = document.getElementById('r-user').value.toLowerCase().trim();
-            if(db[u] || u === 'aryan@gmail.com') return alert("ئەم یوزەرە هەیە!");
-            db[u] = { name: document.getElementById('r-name').value, pass: document.getElementById('r-pass').value, bio: "سڵاو", img: "", imgSize: 100, theme: 'theme-classic', ver: null, links: [] };
-            activeUser = u; save(); showDashboard();
+            const user = document.getElementById('r-user').value.toLowerCase().trim();
+            if(db[user] || user === 'aryan@gmail.com') return alert("ئەم یوزەرە هەیە!");
+            db[user] = { 
+                name: document.getElementById('r-name').value, 
+                pass: document.getElementById('r-pass').value, 
+                bio: "بەخێربێیت بۆ لاپەڕەکەم", img: "", imgSize: 100, theme: 'theme-classic', ver: null, links: [] 
+            };
+            activeUser = user; save(); showDashboard();
         }
 
         function handleLogin(e) {
@@ -210,7 +214,8 @@
             const u = document.getElementById('l-user').value.toLowerCase().trim();
             const p = document.getElementById('l-pass').value;
             if(u === 'aryan@gmail.com' && p === '12345678') { activeUser = u; save(); showAdmin(); return; }
-            if(db[u] && db[u].pass === p) { activeUser = u; save(); showDashboard(); } else alert("هەڵەیە!");
+            if(db[u] && db[u].pass === p) { activeUser = u; save(); showDashboard(); } 
+            else alert("زانیارییەکان هەڵەن!");
         }
 
         function showAdmin() {
@@ -221,27 +226,30 @@
         }
 
         function renderAdmin() {
-            const area = document.getElementById('admin-list'); area.innerHTML = "";
-            Object.keys(db).forEach(u => {
-                area.innerHTML += `
-                <div class="flex items-center justify-between p-5 glass rounded-3xl border border-white/10">
+            const list = document.getElementById('admin-list'); list.innerHTML = "";
+            Object.keys(db).forEach(id => {
+                const user = db[id];
+                list.innerHTML += `
+                <div class="flex items-center justify-between p-4 bg-white/5 rounded-3xl border border-white/10">
                     <div class="flex items-center gap-3">
-                        <img src="${db[u].img || 'https://ui-avatars.com/api/?name='+u}" class="w-12 h-12 rounded-full">
-                        <div><p class="font-bold">@${u}</p><p class="text-[10px] opacity-50">${db[u].name} | P: ${db[u].pass}</p></div>
+                        <img src="${user.img || 'https://ui-avatars.com/api/?name='+id}" class="w-12 h-12 rounded-full object-cover">
+                        <div>
+                            <p class="font-bold">@${id}</p>
+                            <p class="text-[10px] opacity-50">${user.name} | P: ${user.pass}</p>
+                        </div>
                     </div>
-                    <div class="flex flex-wrap gap-1">
-                        <button onclick="setB('${u}', 'blue')" class="w-6 h-6 bg-blue-500 rounded-full text-[8px] text-white flex items-center justify-center"><i class="fas fa-check"></i></button>
-                        <button onclick="setB('${u}', 'gold')" class="w-6 h-6 bg-yellow-500 rounded-full text-[8px] text-white flex items-center justify-center"><i class="fas fa-crown"></i></button>
-                        <button onclick="setB('${u}', 'red')" class="w-6 h-6 bg-red-500 rounded-full text-[8px] text-white flex items-center justify-center"><i class="fas fa-fire"></i></button>
-                        <button onclick="setB('${u}', 'black')" class="w-6 h-6 bg-white rounded-full text-[8px] text-black flex items-center justify-center border"><i class="fas fa-star"></i></button>
-                        <button onclick="setB('${u}', null)" class="w-6 h-6 bg-gray-500 rounded-full text-[8px] text-white flex items-center justify-center"><i class="fas fa-times"></i></button>
-                        <button onclick="delU('${u}')" class="w-6 h-6 bg-red-800 rounded-full text-[8px] text-white flex items-center justify-center ml-2"><i class="fas fa-trash"></i></button>
+                    <div class="flex gap-1">
+                        <button onclick="setV('${id}', 'blue')" class="w-7 h-7 bg-blue-500 rounded-full text-[8px]"><i class="fas fa-check"></i></button>
+                        <button onclick="setV('${id}', 'gold')" class="w-7 h-7 bg-yellow-500 rounded-full text-[8px]"><i class="fas fa-crown"></i></button>
+                        <button onclick="setV('${id}', 'red')" class="w-7 h-7 bg-red-500 rounded-full text-[8px]"><i class="fas fa-fire"></i></button>
+                        <button onclick="setV('${id}', null)" class="w-7 h-7 bg-gray-500 rounded-full text-[8px]"><i class="fas fa-times"></i></button>
+                        <button onclick="delU('${id}')" class="w-7 h-7 bg-red-900 rounded-full text-[8px] ml-2"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             });
         }
-        function setB(u, b) { db[u].ver = b; save(); renderAdmin(); }
-        function delU(u) { if(confirm('بسڕێتەوە؟')) { delete db[u]; save(); renderAdmin(); } }
+        function setV(i, v) { db[i].ver = v; save(); renderAdmin(); }
+        function delU(i) { if(confirm('بسڕێتەوە؟')) { delete db[i]; save(); renderAdmin(); } }
         function searchAdmin() {
             const q = document.getElementById('adm-search').value.toLowerCase();
             Array.from(document.getElementById('admin-list').children).forEach(c => c.style.display = c.innerText.toLowerCase().includes(q) ? 'flex' : 'none');
@@ -251,30 +259,37 @@
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('user-panel').classList.remove('hidden');
             document.getElementById('logout-btn').classList.remove('hidden');
-            const u = db[activeUser];
-            document.getElementById('u-name').value = u.name;
-            document.getElementById('u-bio').value = u.bio;
-            document.getElementById('u-theme').value = u.theme;
-            document.getElementById('u-size').value = u.imgSize;
+            const user = db[activeUser];
+            document.getElementById('u-name').value = user.name;
+            document.getElementById('u-bio').value = user.bio;
+            document.getElementById('u-theme').value = user.theme;
+            document.getElementById('u-size').value = user.imgSize;
             document.getElementById('wa-link').href += activeUser;
-            if(u.img) { document.getElementById('u-img-view').src = u.img; document.getElementById('u-img-view').classList.remove('hidden'); document.getElementById('u-cam').classList.add('hidden'); }
+            if(user.img) { document.getElementById('u-img-view').src = user.img; document.getElementById('u-img-view').classList.remove('hidden'); document.getElementById('u-cam').classList.add('hidden'); }
             renderEditLinks(); live();
         }
 
-        function upImg(e) { const r = new FileReader(); r.onload = () => { db[activeUser].img = r.result; showDashboard(); }; r.readAsDataURL(e.target.files[0]); }
+        function upImg(e) {
+            const r = new FileReader();
+            r.onload = () => { db[activeUser].img = r.result; showDashboard(); };
+            r.readAsDataURL(e.target.files[0]);
+        }
+
         function addLink() { db[activeUser].links.push({ type: 'instagram', url: '', label: 'ئینستاگرام' }); save(); renderEditLinks(); live(); }
+
         function renderEditLinks() {
             const area = document.getElementById('links-editor'); area.innerHTML = "";
             db[activeUser].links.forEach((l, i) => {
-                area.innerHTML += `<div class="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2">
+                area.innerHTML += `
+                <div class="p-4 bg-white/5 rounded-2xl border border-white/5 space-y-2">
                     <div class="flex gap-2">
-                        <select onchange="upL(${i}, 'type', this.value)" class="bg-gray-800 text-[10px] p-2 rounded-lg outline-none">
+                        <select onchange="upL(${i}, 'type', this.value)" class="bg-black text-[10px] p-2 rounded-lg outline-none">
                             ${Object.keys(platforms).map(p => `<option value="${p}" ${l.type===p?'selected':''}>${platforms[p].name}</option>`).join('')}
                         </select>
                         <input type="text" value="${l.label}" oninput="upL(${i}, 'label', this.value)" class="flex-1 bg-transparent border-b border-white/10 text-xs outline-none">
                         <button onclick="remL(${i})" class="text-red-400"><i class="fas fa-trash"></i></button>
                     </div>
-                    <input type="text" value="${l.url}" oninput="upL(${i}, 'url', this.value)" placeholder="لینک لێرە دانێ" class="w-full bg-white/5 p-2 rounded-lg text-[10px] outline-none">
+                    <input type="text" value="${l.url}" oninput="upL(${i}, 'url', this.value)" placeholder="لینکەکە لێرە دابنێ" class="w-full bg-white/5 p-2 rounded-lg text-[10px] outline-none">
                 </div>`;
             });
         }
@@ -282,41 +297,46 @@
         function remL(i) { db[activeUser].links.splice(i, 1); save(); renderEditLinks(); live(); }
 
         function live() {
-            const u = db[activeUser];
-            u.name = document.getElementById('u-name').value; u.bio = document.getElementById('u-bio').value;
-            u.theme = document.getElementById('u-theme').value; u.imgSize = document.getElementById('u-size').value; save();
+            const user = db[activeUser];
+            user.name = document.getElementById('u-name').value;
+            user.bio = document.getElementById('u-bio').value;
+            user.theme = document.getElementById('u-theme').value;
+            user.imgSize = document.getElementById('u-size').value;
+            save();
 
-            const pre = document.getElementById('pre-screen'); pre.className = `w-full h-full p-8 flex flex-col items-center overflow-y-auto ${u.theme}`;
-            document.getElementById('pre-name').innerText = u.name;
-            document.getElementById('pre-bio').innerText = u.bio;
-            
+            const pre = document.getElementById('pre-screen'); pre.className = `w-full h-full p-8 flex flex-col items-center overflow-y-auto ${user.theme}`;
+            document.getElementById('pre-name').innerText = user.name;
+            document.getElementById('pre-bio').innerText = user.bio;
             const bdg = document.getElementById('pre-badge');
-            if(u.ver && bgs[u.ver]) { bdg.className = `absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 border-black text-[10px] shadow-lg ${bgs[u.ver].cls}`; bdg.innerHTML = `<i class="${bgs[u.ver].icon}"></i>`; bdg.classList.remove('hidden'); }
+            if(user.ver) { bdg.className = `absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 border-black text-[10px] ${bgs[user.ver].cls}`; bdg.innerHTML = `<i class="${bgs[user.ver].icon}"></i>`; bdg.classList.remove('hidden'); }
             else bdg.classList.add('hidden');
 
-            const img = document.getElementById('pre-img'); img.src = u.img || `https://ui-avatars.com/api/?name=${u.name}`;
-            img.style.width = u.imgSize + "px"; img.style.height = u.imgSize + "px";
+            const img = document.getElementById('pre-img');
+            img.src = user.img || `https://ui-avatars.com/api/?name=${user.name}`;
+            img.style.width = user.imgSize + "px"; img.style.height = user.imgSize + "px";
 
             const area = document.getElementById('pre-links'); area.innerHTML = "";
-            u.links.forEach(l => { if(l.url) area.innerHTML += `<div class="w-full p-4 rounded-2xl flex items-center justify-center gap-3 font-bold text-xs shadow-lg ${platforms[l.type].cls}"><i class="${platforms[l.type].icon}"></i> ${l.label}</div>`; });
+            user.links.forEach(l => { if(l.url) area.innerHTML += `<div class="w-full p-4 rounded-2xl flex items-center justify-center gap-3 font-bold text-xs shadow-lg ${platforms[l.type].cls}"><i class="${platforms[l.type].icon}"></i> ${l.label}</div>`; });
         }
 
         function genLink() { const f = window.location.origin + window.location.pathname + "?u=" + activeUser; document.getElementById('final-url').innerText = f; document.getElementById('copy-box').classList.remove('hidden'); }
         function copyIt() { navigator.clipboard.writeText(document.getElementById('final-url').innerText); alert("کۆپی کرا!"); }
 
         function renderPublic(username) {
-            const u = db[username]; document.body.className = u.theme + " min-h-screen";
-            document.getElementById('auth-section').remove(); document.getElementById('public-view').classList.remove('hidden');
-            const img = document.getElementById('v-img'); img.src = u.img || `https://ui-avatars.com/api/?name=${u.name}`;
-            img.style.width = u.imgSize + "px"; img.style.height = u.imgSize + "px";
-            document.getElementById('v-name').innerText = u.name; document.getElementById('v-bio').innerText = u.bio;
+            const user = db[username]; document.body.className = user.theme + " min-h-screen";
+            document.getElementById('auth-section').remove(); document.querySelector('nav').remove();
+            document.getElementById('public-view').classList.remove('hidden');
+            const img = document.getElementById('v-img'); img.src = user.img || `https://ui-avatars.com/api/?name=${user.name}`;
+            img.style.width = user.imgSize + "px"; img.style.height = user.imgSize + "px";
+            document.getElementById('v-name').innerText = user.name;
+            document.getElementById('v-bio').innerText = user.bio;
             const bdg = document.getElementById('v-badge');
-            if(u.ver && bgs[u.ver]) { bdg.className = `absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center border-4 border-black ${bgs[u.ver].cls}`; bdg.innerHTML = `<i class="${bgs[u.ver].icon}"></i>`; bdg.classList.remove('hidden'); }
+            if(user.ver) { bdg.className = `absolute bottom-2 right-2 w-8 h-8 rounded-full flex items-center justify-center border-4 border-black ${bgs[user.ver].cls}`; bdg.innerHTML = `<i class="${bgs[user.ver].icon}"></i>`; bdg.classList.remove('hidden'); }
             const area = document.getElementById('v-links');
-            u.links.forEach(l => { if(l.url) area.innerHTML += `<a href="${l.url}" target="_blank" class="flex items-center justify-center gap-4 w-full p-5 rounded-[2.5rem] font-bold shadow-xl transition-all hover:scale-[1.03] ${platforms[l.type].cls}"><i class="${platforms[l.type].icon} text-2xl"></i><span class="text-lg">${l.label}</span></a>`; });
+            user.links.forEach(l => { if(l.url) area.innerHTML += `<a href="${l.url}" target="_blank" class="flex items-center justify-center gap-4 w-full p-5 rounded-[2.5rem] font-bold shadow-xl transition-all hover:scale-[1.03] ${platforms[l.type].cls}"><i class="${platforms[l.type].icon} text-2xl"></i><span class="text-lg">${l.label}</span></a>`; });
         }
 
-        function logout() { localStorage.removeItem('KAL_SESSION'); location.href = location.origin + location.pathname; }
+        function logout() { localStorage.removeItem('KAL_ACTIVE_SESSION'); location.href = location.origin + location.pathname; }
     </script>
 </body>
 </html>
