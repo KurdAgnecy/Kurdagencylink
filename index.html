@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KurdAgencyLink | سەکۆی بەستەرە کوردییەکان</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
+        body { font-family: 'Vazirmatn', sans-serif; scroll-behavior: smooth; }
+        .preview-mobile { min-height: 600px; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-effect { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen flex flex-col">
+
+    <header class="p-4 bg-white dark:bg-gray-900 shadow-sm flex justify-between items-center sticky top-0 z-50 border-b dark:border-gray-800">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold">K</div>
+            <span class="text-xl font-bold tracking-tight">KurdAgency<span class="text-green-500">Link</span></span>
+        </div>
+        <button id="theme-toggle" class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:ring-2 ring-green-500 transition-all">
+            <i class="fas fa-moon dark:hidden"></i>
+            <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+        </button>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-10">
+        
+        <section id="auth-section" class="max-w-xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold mb-2">بەخێربێیت بۆ کورد ئەجێنسی لینک</h1>
+                <p class="text-gray-500 dark:text-gray-400">لاپەڕەی تایبەتی خۆت بە جوانترین دیزاین دروست بکە</p>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); initDashboard();" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" placeholder="ناوی یەکەم" required class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
+                    <input type="text" placeholder="ناوی دووەم" required class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
+                </div>
+                <input type="text" id="reg-username" placeholder="ناوی هەژمار (Username)" required class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
+                <input type="email" placeholder="ئیمێڵ" required class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
+                <input type="password" placeholder="پاسۆرد" required class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
+                
+                <div>
+                    <label class="block text-sm font-bold mb-2 text-green-600">جۆری کارەکەت هەڵبژێرە (بۆ دیزاین):</label>
+                    <select id="reg-category" onchange="applyJobTheme(this.value)" class="w-full p-3 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500 cursor-pointer">
+                        <option value="default">دیزاینی سادە و مۆدێرن</option>
+                        <option value="tech">تەکنەلۆجیا و پرۆگرامسازی</option>
+                        <option value="food">خواردنگە و چێشتخانە</option>
+                        <option value="edu">زانکۆ و قوتابخانە</option>
+                        <option value="market">مارکێت و هەفتە بازاڕ</option>
+                        <option value="medical">پزیشکی و نۆرینگە</option>
+                        <option value="gym">وەرزش و لەشجوانی</option>
+                        <option value="art">هونەر و وێنەکێشان</option>
+                        <option value="fashion">مۆدێل و فاشیۆن</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white p-4 rounded-xl font-bold text-lg shadow-lg shadow-green-500/30 transition-all transform hover:scale-[1.02]">دروستکردنی لاپەڕە</button>
+            </form>
+        </section>
+
+        <section id="dashboard-section" class="hidden grid lg:grid-cols-2 gap-12 items-start">
+            
+            <div class="bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-xl border dark:border-gray-800 space-y-8">
+                <h2 class="text-xl font-bold border-b dark:border-gray-800 pb-4">ڕێکخستنی زانیارییەکان</h2>
+                
+                <div class="space-y-3">
+                    <label class="font-bold text-sm">وێنەی براند یان پرۆفایل</label>
+                    <input type="file" onchange="previewProfileImg(event)" class="w-full text-xs text-gray-500 file:bg-green-500 file:text-white file:border-0 file:py-2 file:px-4 file:rounded-full file:cursor-pointer">
+                </div>
+
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl border border-blue-200 dark:border-blue-800 flex items-center justify-between">
+                    <div>
+                        <h4 class="font-bold text-blue-700 dark:text-blue-400">وەرگرتنی نیشانەی شین</h4>
+                        <p class="text-xs opacity-70 italic">بۆ پاڵ ناوی خۆت بە تەنها 1$</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="buyBlue('FastPay')" class="px-3 py-1 bg-pink-600 text-white text-[10px] rounded-lg font-bold">FastPay</button>
+                        <button onclick="buyBlue('FIB')" class="px-3 py-1 bg-yellow-500 text-black text-[10px] rounded-lg font-bold">FIB</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h4 class="font-bold">بەستەرەکانت دابنێ:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="relative">
+                            <i class="fab fa-facebook absolute left-3 top-3.5 text-blue-600"></i>
+                            <input type="text" id="in-fb" oninput="syncLinks()" placeholder="فەیسبووک" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-blue-500">
+                        </div>
+                        <div class="relative">
+                            <i class="fab fa-instagram absolute left-3 top-3.5 text-pink-500"></i>
+                            <input type="text" id="in-ig" oninput="syncLinks()" placeholder="ئینستاگرام" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-pink-500">
+                        </div>
+                        <div class="relative">
+                            <i class="fab fa-snapchat absolute left-3 top-3.5 text-yellow-500"></i>
+                            <input type="text" id="in-sc" oninput="syncLinks()" placeholder="سناپچات" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-yellow-500">
+                        </div>
+                        <div class="relative">
+                            <i class="fab fa-tiktok absolute left-3 top-3.5 text-black dark:text-white"></i>
+                            <input type="text" id="in-tt" oninput="syncLinks()" placeholder="تیکتۆک" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-black">
+                        </div>
+                        <div class="relative">
+                            <i class="fab fa-whatsapp absolute left-3 top-3.5 text-green-500"></i>
+                            <input type="text" id="in-wa" oninput="syncLinks()" placeholder="واتسئەپ" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-green-500">
+                        </div>
+                        <div class="relative">
+                            <i class="fas fa-globe absolute left-3 top-3.5 text-gray-500"></i>
+                            <input type="text" id="in-web" oninput="syncLinks()" placeholder="وێبسایتی تر" class="w-full p-3 pl-10 rounded-xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-1 ring-gray-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sticky top-24 flex justify-center">
+                <div id="phone-frame" class="w-[320px] h-[640px] bg-black rounded-[3rem] border-[8px] border-gray-800 shadow-2xl overflow-hidden relative">
+                    <div id="preview-bg" class="w-full h-full bg-white dark:bg-gray-900 p-6 flex flex-col items-center overflow-y-auto">
+                        
+                        <div class="relative mt-8">
+                            <img id="p-img" src="https://ui-avatars.com/api/?name=Kurd+Agency&background=00c853&color=fff" class="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover">
+                            <div id="p-blue" class="hidden absolute -right-1 bottom-1 bg-blue-500 text-white text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+
+                        <h3 id="p-name" class="font-bold text-xl mt-4">Username</h3>
+                        <p id="p-tag" class="text-xs opacity-60 mb-8">@account</p>
+
+                        <div id="links-render" class="w-full space-y-3">
+                            </div>
+
+                        <div class="mt-auto pt-10 text-[10px] opacity-40 font-bold">
+                            KurdAgencyLink.me
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="p-8 text-center bg-white dark:bg-gray-900 border-t dark:border-gray-800">
+        <p class="font-bold text-gray-700 dark:text-gray-300">سەرجەم مافەکان پارێزراوە بۆ ©️ 2026 KurdAgencyLink</p>
+        <p class="text-sm text-gray-500 mt-1">دروستکراوە لەلایەن <span class="text-green-500 font-bold">KURD AGENCY COMPANY</span></p>
+    </footer>
+
+    <script>
+        // Dark Mode Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => document.documentElement.classList.toggle('dark'));
+
+        // Dashboard Init
+        function initDashboard() {
+            const user = document.getElementById('reg-username').value;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            document.getElementById('p-name').innerText = user;
+            document.getElementById('p-tag').innerText = `@${user.toLowerCase().replace(/\s+/g, '')}`;
+            applyJobTheme(document.getElementById('reg-category').value);
+        }
+
+        // Image Preview
+        function previewProfileImg(e) {
+            const reader = new FileReader();
+            reader.onload = () => document.getElementById('p-img').src = reader.result;
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
+        // Verified Logic
+        function buyBlue(method) {
+            alert(`تکایە بڕی 1$ بنێرە بۆ ژمارەی کۆمپانیا لەڕێگەی ${method} بۆ چالاک بوونی خێرا.`);
+            document.getElementById('p-blue').classList.remove('hidden');
+        }
+
+        // Theme Application
+        function applyJobTheme(job) {
+            const bg = document.getElementById('preview-bg');
+            const frame = document.getElementById('phone-frame');
+            bg.className = "w-full h-full p-6 flex flex-col items-center overflow-y-auto transition-all duration-500 ";
+            frame.className = "w-[320px] h-[640px] bg-black rounded-[3rem] border-[8px] border-gray-800 shadow-2xl overflow-hidden relative transition-all ";
+
+            if(job === 'tech') {
+                bg.classList.add('bg-slate-950', 'text-cyan-400');
+                frame.classList.add('ring-4', 'ring-cyan-500');
+            } else if(job === 'food') {
+                bg.classList.add('bg-orange-50', 'text-orange-900');
+                bg.style.backgroundImage = "radial-gradient(#fed7aa 1px, transparent 1px)";
+                bg.style.backgroundSize = "20px 20px";
+            } else if(job === 'medical') {
+                bg.classList.add('bg-white', 'text-blue-600');
+                bg.style.borderTop = "20px solid #2563eb";
+            } else if(job === 'gym') {
+                bg.classList.add('bg-black', 'text-yellow-500');
+                bg.style.fontStyle = "italic";
+            } else if(job === 'art') {
+                bg.classList.add('bg-gradient-to-b', 'from-purple-600', 'to-pink-500', 'text-white');
+            } else if(job === 'fashion') {
+                bg.classList.add('bg-pink-50', 'text-pink-700');
+                bg.style.border = "2px double #f472b6";
+            } else {
+                bg.classList.add('bg-white', 'dark:bg-gray-900', 'text-gray-800', 'dark:text-white');
+            }
+            syncLinks();
+        }
+
+        // Sync and Render Links
+        function syncLinks() {
+            const job = document.getElementById('reg-category').value;
+            const container = document.getElementById('links-render');
+            container.innerHTML = "";
+
+            const links = [
+                { id: 'in-fb', icon: 'fab fa-facebook', label: 'Facebook', color: 'bg-[#1877F2]' },
+                { id: 'in-ig', icon: 'fab fa-instagram', label: 'Instagram', color: 'bg-gradient-to-r from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]' },
+                { id: 'in-sc', icon: 'fab fa-snapchat', label: 'Snapchat', color: 'bg-[#FFFC00] !text-black' },
+                { id: 'in-tt', icon: 'fab fa-tiktok', label: 'TikTok', color: 'bg-black' },
+                { id: 'in-wa', icon: 'fab fa-whatsapp', label: 'WhatsApp', color: 'bg-[#25D366]' },
+                { id: 'in-web', icon: 'fas fa-link', label: 'Website', color: 'bg-gray-600' }
+            ];
+
+            links.forEach(link => {
+                const val = document.getElementById(link.id).value;
+                if(val) {
+                    let btnClass = `w-full p-3 rounded-2xl flex items-center justify-between text-white font-bold text-sm shadow-md transition-transform hover:scale-[1.03] ${link.color} `;
+                    
+                    // Special design tweaks per job
+                    if(job === 'tech') btnClass = "w-full p-3 border border-cyan-500 text-cyan-400 bg-transparent flex justify-between items-center rounded-none font-mono ";
+                    if(job === 'medical') btnClass = "w-full p-3 bg-blue-600 text-white rounded-md flex justify-between items-center shadow-none ";
+                    if(job === 'gym') btnClass = "w-full p-3 bg-yellow-500 text-black rounded-none skew-x-[-10deg] flex justify-between items-center ";
+
+                    container.innerHTML += `
+                        <div class="${btnClass}">
+                            <i class="${link.icon} text-lg"></i>
+                            <span>${link.label}</span>
+                            <i class="fas fa-chevron-left text-[10px] opacity-50"></i>
+                        </div>
+                    `;
+                }
+            });
+
+            if(container.innerHTML === "") {
+                container.innerHTML = "<p class='text-center opacity-30 text-xs mt-10'>بەستەرەکانت لێرە دەردەکەون</p>";
+            }
+        }
+    </script>
+</body>
+</html>
