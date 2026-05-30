@@ -3,201 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KurdAgencyLink | بەڕێوەبەری بەستەرەکان</title>
+    <title>KurdAgencyLink | سیستەمی بەستەرەکان</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700&display=swap');
-        body { font-family: 'Vazirmatn', sans-serif; transition: all 0.3s ease; }
-        .preview-scroll::-webkit-scrollbar { width: 3px; }
-        .preview-scroll::-webkit-scrollbar-thumb { background: #10b981; }
+        body { font-family: 'Vazirmatn', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen transition-colors">
 
-    <header class="p-4 bg-white dark:bg-gray-900 shadow-sm flex justify-between items-center sticky top-0 z-[100] border-b dark:border-gray-800">
-        <div class="flex items-center gap-2">
-            <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white shadow-lg font-bold text-xl">K</div>
-            <h1 class="text-xl font-bold tracking-tight">KurdAgency<span class="text-green-500">Link</span></h1>
+    <div id="public-view" class="hidden min-h-screen flex flex-col items-center p-6">
+        <div class="mt-12 relative">
+            <img id="pub-img" class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 shadow-2xl object-cover">
+            <div id="pub-badge" class="absolute -right-1 bottom-1 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-lg"></div>
         </div>
-        <div class="flex items-center gap-3">
-            <button id="theme-toggle" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-200 dark:ring-gray-700">
-                <i class="fas fa-moon dark:hidden"></i>
-                <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
-            </button>
-            <button id="nav-logout" onclick="logout()" class="hidden px-4 py-2 bg-red-500 text-white rounded-xl text-xs font-bold transition-all">چوونەدەرەوە</button>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <h2 id="pub-name" class="font-bold text-2xl mt-4"></h2>
+        <p id="pub-bio" class="text-xs opacity-60 font-bold uppercase tracking-widest mt-1"></p>
         
-        <section id="auth-box" class="max-w-md mx-auto bg-white dark:bg-gray-900 p-8 rounded-[2rem] shadow-2xl border dark:border-gray-800">
-            <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl mb-8">
-                <button onclick="toggleAuth('login')" id="btn-login" class="flex-1 py-3 rounded-xl font-bold text-sm bg-white dark:bg-gray-700 shadow">چوونەژوورەوە</button>
-                <button onclick="toggleAuth('reg')" id="btn-reg" class="flex-1 py-3 rounded-xl font-bold text-sm opacity-50">دروستکردنی هەژمار</button>
+        <div id="pub-links" class="w-full max-w-sm mt-8 space-y-4"></div>
+        
+        <div class="mt-auto py-10 opacity-30 text-[10px] font-bold">CREATED BY KURDAGENCYLINK</div>
+    </div>
+
+    <div id="app-interface">
+        <header class="p-4 bg-white dark:bg-gray-900 shadow-sm flex justify-between items-center sticky top-0 z-[100] border-b dark:border-gray-800">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white font-bold text-xl">K</div>
+                <h1 class="text-xl font-bold">KurdAgency<span class="text-green-500">Link</span></h1>
             </div>
-
-            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-                <input type="text" id="l-id" placeholder="ئیمێڵ یان ژمارەی مۆبایل" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
-                <input type="password" id="l-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none focus:ring-2 ring-green-500">
-                <button class="w-full bg-green-500 hover:bg-green-600 text-white p-4 rounded-2xl font-bold transition-all shadow-lg shadow-green-500/30">چوونەژوورەوە</button>
-            </form>
-
-            <form id="form-reg" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="r-fn" placeholder="ناوی یەکەم" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                    <input type="text" id="r-ln" placeholder="ناوی دووەم" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                </div>
-                <input type="text" id="r-user" placeholder="یوزەرنەیم (بۆ ناو لینکەکە)" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                <input type="text" id="r-id" placeholder="ئیمێڵ یان ژمارە" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                <input type="password" id="r-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                <select id="r-cat" class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
-                    <option value="tech">تەکنەلۆجیا</option>
-                    <option value="food">خواردنگە و کافێ</option>
-                    <option value="edu">زانستی و فێربوون</option>
-                    <option value="market">بازرگانی و فرۆشتن</option>
-                    <option value="other">کاری تر</option>
-                </select>
-                <button class="w-full bg-green-500 hover:bg-green-600 text-white p-4 rounded-2xl font-bold transition-all">تۆمارکردن</button>
-            </form>
-        </section>
-
-        <section id="admin-panel" class="hidden space-y-6">
-            <div class="bg-blue-600 p-8 rounded-[2rem] text-white shadow-xl flex justify-between items-center">
-                <div>
-                    <h2 class="text-3xl font-bold">سڵاو ئاریان</h2>
-                    <p class="opacity-80">بەڕێوەبەری گشتی KurdAgencyLink</p>
-                </div>
-                <i class="fas fa-user-shield text-5xl opacity-40"></i>
+            <div class="flex items-center gap-3">
+                <button onclick="document.documentElement.classList.toggle('dark')" class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 border dark:border-gray-700">
+                    <i class="fas fa-adjust"></i>
+                </button>
+                <button id="nav-logout" onclick="location.reload()" class="hidden px-4 py-2 bg-red-500 text-white rounded-xl text-xs font-bold">چوونەدەرەوە</button>
             </div>
-            
-            <div class="grid lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white dark:bg-gray-900 p-6 rounded-[2rem] border dark:border-gray-800 shadow-sm">
-                    <h3 class="font-bold mb-4 text-blue-500">بەخشینی مۆری تایبەت</h3>
-                    <div class="space-y-4">
-                        <input type="text" id="adm-target-user" placeholder="یوزەرنەیمی کەسەکە" class="w-full p-3 rounded-xl border dark:bg-gray-800 outline-none">
-                        <select id="adm-badge-type" class="w-full p-3 rounded-xl border dark:bg-gray-800">
-                            <option value="verified">سەحی شین (فەرمی)</option>
-                            <option value="gold">سەحی ئاڵتونی (براند)</option>
-                            <option value="star">ئەستێرە (ناودار)</option>
-                        </select>
-                        <div class="flex gap-2">
-                            <button onclick="controlBadge(true)" class="flex-1 bg-green-500 text-white py-3 rounded-xl font-bold">چالاکردن</button>
-                            <button onclick="controlBadge(false)" class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold">سڕینەوە</button>
+        </header>
+
+        <main class="container mx-auto px-4 py-8 max-w-6xl">
+            <section id="auth-box" class="max-w-md mx-auto bg-white dark:bg-gray-900 p-8 rounded-[2rem] shadow-2xl border dark:border-gray-800">
+                <div class="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl mb-8">
+                    <button onclick="toggleAuth('login')" id="btn-login" class="flex-1 py-3 rounded-xl font-bold text-sm bg-white dark:bg-gray-700 shadow">چوونەژوورەوە</button>
+                    <button onclick="toggleAuth('reg')" id="btn-reg" class="flex-1 py-3 rounded-xl font-bold text-sm opacity-50">دروستکردنی هەژمار</button>
+                </div>
+
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                    <input type="text" id="l-id" placeholder="ئیمێڵ یان ژمارە" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    <input type="password" id="l-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold shadow-lg shadow-green-500/30">چوونەژوورەوە</button>
+                </form>
+
+                <form id="form-reg" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="r-fn" placeholder="ناوی یەکەم" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                        <input type="text" id="r-ln" placeholder="ناوی دووەم" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    </div>
+                    <input type="text" id="r-user" placeholder="یوزەرنەیم (بۆ ناو لینکەکە)" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    <input type="text" id="r-id" placeholder="ئیمێڵ یان ژمارە" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    <input type="password" id="r-pass" placeholder="پاسۆرد" required class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                    <select id="r-cat" class="w-full p-4 rounded-2xl border dark:bg-gray-800 dark:border-gray-700 outline-none">
+                        <option value="tech">تەکنەلۆجیا</option>
+                        <option value="food">خواردنگە</option>
+                        <option value="other">گشتی</option>
+                    </select>
+                    <button class="w-full bg-green-500 text-white p-4 rounded-2xl font-bold">تۆمارکردن</button>
+                </form>
+            </section>
+
+            <section id="dashboard" class="hidden grid lg:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 p-6 rounded-[2rem] shadow-xl border dark:border-gray-800">
+                        <h2 class="font-bold mb-4">دەستکاری پرۆفایل</h2>
+                        <input type="file" onchange="updateImg(event)" class="text-xs mb-4">
+                        <input type="text" id="u-fn" oninput="saveAndSync()" placeholder="ناو" class="w-full p-3 mb-3 rounded-xl border dark:bg-gray-800 outline-none">
+                        <input type="text" id="u-bio" oninput="saveAndSync()" placeholder="ناونیشانی کار" class="w-full p-3 rounded-xl border dark:bg-gray-800 outline-none">
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 p-6 rounded-[2rem] shadow-xl border dark:border-gray-800">
+                        <h2 class="font-bold mb-4">سۆشیاڵ میدیاکانت</h2>
+                        <div class="flex gap-2 mb-4">
+                            <select id="new-link-type" class="flex-1 p-3 rounded-xl border dark:bg-gray-800">
+                                <option value="fb">Facebook</option>
+                                <option value="ig">Instagram</option>
+                                <option value="sc">Snapchat</option>
+                                <option value="tt">TikTok</option>
+                                <option value="wa">WhatsApp</option>
+                            </select>
+                            <button onclick="addLink()" class="bg-green-500 text-white px-6 rounded-xl font-bold">+</button>
+                        </div>
+                        <div id="links-input-list" class="space-y-2"></div>
+                    </div>
+
+                    <div class="p-4 bg-green-500 text-white rounded-[2rem] shadow-xl shadow-green-500/20">
+                        <button onclick="showFinalLink()" class="w-full font-bold text-lg">دروستکردنی لینک</button>
+                        <div id="final-link-display" class="hidden mt-4 p-4 bg-white/20 rounded-xl flex items-center justify-between">
+                            <span id="the-url" class="text-xs font-mono select-all"></span>
+                            <button onclick="copyURL()" class="bg-white text-green-600 px-3 py-1 rounded-lg text-[10px] font-bold">کۆپی</button>
+                        </div>
+                        <p class="text-[10px] text-center mt-2 opacity-80">تێبینی: ئەم لینکە لە هەموو شوێنێک ئیش دەکات.</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="w-[300px] h-[600px] bg-black rounded-[3rem] border-[8px] border-gray-900 shadow-2xl relative overflow-hidden">
+                        <div id="preview-box" class="w-full h-full p-6 flex flex-col items-center bg-white dark:bg-gray-950 overflow-y-auto">
+                            <img id="p-img" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff" class="w-20 h-20 rounded-full mt-10 object-cover border-2 border-green-500">
+                            <h2 id="p-name" class="font-bold text-lg mt-4 text-center">ناو</h2>
+                            <p id="p-bio" class="text-[10px] opacity-60 text-center uppercase">BIO</p>
+                            <div id="p-links" class="w-full mt-8 space-y-3"></div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="lg:col-span-2 bg-white dark:bg-gray-900 p-6 rounded-[2rem] border dark:border-gray-800 shadow-sm h-[400px] overflow-y-auto preview-scroll">
-                    <h3 class="font-bold mb-4">هەموو بەکارهێنەرەکان</h3>
-                    <div id="admin-user-list" class="divide-y dark:divide-gray-800"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="user-dashboard" class="hidden grid lg:grid-cols-2 gap-10">
-            <div class="space-y-6">
-                <div class="bg-white dark:bg-gray-900 p-6 rounded-[2.5rem] shadow-xl border dark:border-gray-800">
-                    <h2 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-user-edit text-green-500"></i> ڕێکخستنی پرۆفایل</h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="col-span-2 space-y-2">
-                            <label class="text-xs opacity-50 font-bold">وێنەی پرۆفایل</label>
-                            <input type="file" onchange="uploadImg(event)" class="w-full text-xs">
-                            <div class="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-3 rounded-xl">
-                                <span class="text-xs">قەبارەی وێنە:</span>
-                                <input type="range" min="50" max="150" value="80" oninput="resizeImg(this.value)" class="flex-1 accent-green-500">
-                            </div>
-                        </div>
-                        <input type="text" id="u-fname" oninput="saveData()" placeholder="ناوی یەکەم" class="p-3 rounded-xl border dark:bg-gray-800 outline-none text-sm">
-                        <input type="text" id="u-lname" oninput="saveData()" placeholder="ناوی دووەم" class="p-3 rounded-xl border dark:bg-gray-800 outline-none text-sm">
-                        <input type="text" id="u-bio" oninput="saveData()" placeholder="ناونیشان (بۆ نمونە: فۆتۆگرافەر)" class="col-span-2 p-3 rounded-xl border dark:bg-gray-800 outline-none text-sm">
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 p-6 rounded-[2.5rem] shadow-xl border dark:border-gray-800">
-                    <h2 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-link text-green-500"></i> سۆشیاڵ میدیاکانت</h2>
-                    <div class="flex gap-2 mb-4">
-                        <select id="new-link-type" class="flex-1 p-3 rounded-xl border dark:bg-gray-800 text-sm">
-                            <option value="fb">Facebook</option>
-                            <option value="ig">Instagram</option>
-                            <option value="sc">Snapchat</option>
-                            <option value="tt">TikTok</option>
-                            <option value="wa">WhatsApp</option>
-                            <option value="web">Website</option>
-                        </select>
-                        <button onclick="addNewLink()" class="bg-green-500 text-white px-6 rounded-xl font-bold">+</button>
-                    </div>
-                    <div id="user-links-inputs" class="space-y-3"></div>
-                </div>
-
-                <div class="bg-blue-600 p-6 rounded-[2.5rem] text-white shadow-lg relative overflow-hidden">
-                    <div class="relative z-10">
-                        <h3 class="font-bold">وەرگرتنی سەحی شین</h3>
-                        <p class="text-xs opacity-90 mt-1">بۆ چالاککردن، سکرین شۆتی ناردنی ١ دۆلار بنێرە بۆ وەتسئەپی ئاریان:</p>
-                        <a href="https://wa.me/9647729585559" target="_blank" class="block mt-2 font-black text-yellow-300 text-lg tracking-widest">07729585559</a>
-                    </div>
-                    <i class="fas fa-certificate absolute -right-4 -bottom-4 text-8xl opacity-10"></i>
-                </div>
-
-                <div class="p-2">
-                    <button onclick="generateLink()" class="w-full bg-green-500 text-white p-5 rounded-2xl font-bold shadow-xl shadow-green-500/20 transform active:scale-95 transition-all">دروستکردنی لینک</button>
-                    <div id="copy-area" class="hidden mt-4 p-4 bg-white dark:bg-gray-900 rounded-2xl border-2 border-dashed border-green-500 flex items-center justify-between">
-                        <span id="final-url" class="text-xs font-mono font-bold text-green-600"></span>
-                        <button onclick="copyToClipboard()" class="bg-green-500 text-white px-4 py-1.5 rounded-lg text-xs font-bold">Copy</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sticky top-24 flex justify-center h-fit">
-                <div class="w-[310px] h-[620px] bg-black rounded-[3rem] border-[10px] border-gray-900 shadow-2xl relative overflow-hidden">
-                    <div id="preview-screen" class="w-full h-full p-6 flex flex-col items-center overflow-y-auto preview-scroll">
-                        <div class="mt-12 relative">
-                            <img id="p-image" src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff" class="rounded-full border-4 border-white dark:border-gray-800 shadow-xl object-cover">
-                            <div id="p-badge" class="hidden absolute -right-1 bottom-1 w-6 h-6 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-800 shadow-lg"></div>
-                        </div>
-                        <h2 id="p-name" class="font-bold text-xl mt-4">Username</h2>
-                        <p id="p-bio" class="text-[10px] opacity-60 font-bold uppercase tracking-tighter mt-1">YOUR BIO HERE</p>
-                        <div id="p-links-list" class="w-full mt-8 space-y-3"></div>
-                        <div class="mt-auto pt-10 text-[8px] font-bold opacity-30">POWERED BY KURD AGENCY</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+            </section>
+        </main>
+    </div>
 
     <script>
-        // --- Security & Data ---
-        const ADMIN_INFO = { email: "aryan@gmail.com", pass: "aryan12345" };
-        if(!localStorage.getItem('klink_db')) localStorage.setItem('klink_db', JSON.stringify({}));
-        let db = JSON.parse(localStorage.getItem('klink_db'));
-        let currentActiveUser = null;
+        // --- سیستەمی داتابەیس ---
+        if(!localStorage.getItem('klink_v2')) localStorage.setItem('klink_v2', JSON.stringify({}));
+        let db = JSON.parse(localStorage.getItem('klink_v2'));
+        let activeUser = null;
 
-        // --- Auth Functions ---
+        // --- پشکنینی ئەوەی ئایا لینکەکە کراوەتەوە؟ ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewUser = urlParams.get('u');
+
+        if(viewUser && db[viewUser]) {
+            renderPublicPage(viewUser);
+        }
+
+        function renderPublicPage(username) {
+            document.getElementById('app-interface').style.display = 'none';
+            document.getElementById('public-view').classList.remove('hidden');
+            const u = db[username];
+            
+            document.getElementById('pub-img').src = u.img || `https://ui-avatars.com/api/?name=${u.fn}&background=10b981&color=fff`;
+            document.getElementById('pub-name').innerText = u.fn + " " + u.ln;
+            document.getElementById('pub-bio').innerText = u.bio;
+            
+            const linksArea = document.getElementById('pub-links');
+            linksArea.innerHTML = "";
+            for(let k in u.links) {
+                if(u.links[k]) {
+                    linksArea.innerHTML += `
+                        <a href="${u.links[k]}" target="_blank" class="block w-full py-4 bg-green-500 text-white rounded-2xl text-center font-bold shadow-lg transform active:scale-95 transition-all">
+                            ${k.toUpperCase()}
+                        </a>`;
+                }
+            }
+            
+            // دیزاینی تایبەت بە کارەکە
+            if(u.cat === 'tech') document.body.className = "bg-slate-950 text-cyan-400";
+            if(u.cat === 'food') document.body.className = "bg-orange-50 text-orange-950";
+        }
+
+        // --- ئیشپێکردنی دوگمەکان ---
         function toggleAuth(t) {
             document.getElementById('form-login').classList.toggle('hidden', t === 'reg');
             document.getElementById('form-reg').classList.toggle('hidden', t === 'login');
-            document.getElementById('btn-login').className = t === 'login' ? 'flex-1 py-3 rounded-xl font-bold text-sm bg-white dark:bg-gray-700 shadow' : 'flex-1 py-3 rounded-xl font-bold text-sm opacity-50';
-            document.getElementById('btn-reg').className = t === 'reg' ? 'flex-1 py-3 rounded-xl font-bold text-sm bg-white dark:bg-gray-700 shadow' : 'flex-1 py-3 rounded-xl font-bold text-sm opacity-50';
+            document.getElementById('btn-login').className = t === 'login' ? 'flex-1 py-3 rounded-xl font-bold bg-white dark:bg-gray-700 shadow' : 'flex-1 py-3 font-bold opacity-50';
+            document.getElementById('btn-reg').className = t === 'reg' ? 'flex-1 py-3 rounded-xl font-bold bg-white dark:bg-gray-700 shadow' : 'flex-1 py-3 font-bold opacity-50';
         }
 
         function handleRegister(e) {
             e.preventDefault();
-            const user = document.getElementById('r-user').value.trim().toLowerCase();
-            if(db[user] || user === 'aryan') return alert("ئەم ناوە گیراوە یان ڕێگەپێنەدراوە!");
-            
-            db[user] = {
-                fname: document.getElementById('r-fn').value,
-                lname: document.getElementById('r-ln').value,
+            const u = document.getElementById('r-user').value.trim().toLowerCase();
+            if(db[u]) return alert("ئەم یوزەرنەیمە گیراوە!");
+            db[u] = {
+                fn: document.getElementById('r-fn').value,
+                ln: document.getElementById('r-ln').value,
                 id: document.getElementById('r-id').value,
                 pass: document.getElementById('r-pass').value,
                 cat: document.getElementById('r-cat').value,
-                img: "", badge: null, bio: "KurdAgency User", links: {}, imgSize: 80
+                bio: "KurdAgency User", img: "", links: {}
             };
-            save();
-            alert("هەژمارەکەت دروستکرا! ئێستا بچۆ ژوورەوە.");
+            localStorage.setItem('klink_v2', JSON.stringify(db));
+            alert("تۆمارکرا! بچۆ ژوورەوە.");
             toggleAuth('login');
         }
 
@@ -205,169 +187,89 @@
             e.preventDefault();
             const id = document.getElementById('l-id').value;
             const pass = document.getElementById('l-pass').value;
-
-            // Strict Admin Access Check
-            if(id === ADMIN_INFO.email && pass === ADMIN_INFO.pass) {
-                return showAdmin();
-            }
-
             for(let u in db) {
                 if(db[u].id === id && db[u].pass === pass) {
-                    currentActiveUser = u;
-                    return showDashboard();
+                    activeUser = u;
+                    loadDashboard();
+                    return;
                 }
             }
-            alert("زانیارییەکان هەڵەن!");
+            alert("هەڵەیە!");
         }
 
-        // --- View Management ---
-        function showAdmin() {
+        function loadDashboard() {
             document.getElementById('auth-box').classList.add('hidden');
-            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
             document.getElementById('nav-logout').classList.remove('hidden');
-            renderAdminUsers();
-        }
-
-        function showDashboard() {
-            document.getElementById('auth-box').classList.add('hidden');
-            document.getElementById('user-dashboard').classList.remove('hidden');
-            document.getElementById('nav-logout').classList.remove('hidden');
-            
-            const u = db[currentActiveUser];
-            document.getElementById('u-fname').value = u.fname;
-            document.getElementById('u-lname').value = u.lname;
+            const u = db[activeUser];
+            document.getElementById('u-fn').value = u.fn;
             document.getElementById('u-bio').value = u.bio;
-            renderUserLinks();
+            renderInputLinks();
             updatePreview();
         }
 
-        // --- Admin Actions ---
-        function controlBadge(give) {
-            const target = document.getElementById('adm-target-user').value.trim().toLowerCase();
-            const type = document.getElementById('adm-badge-type').value;
-            if(!db[target]) return alert("بەکارهێنەر نەدۆزرایەوە!");
-            db[target].badge = give ? type : null;
-            save();
-            alert("کردارەکە سەرکەوتوو بوو.");
-            renderAdminUsers();
+        function addLink() {
+            const type = document.getElementById('new-link-type').value;
+            db[activeUser].links[type] = "";
+            renderInputLinks();
+            saveAndSync();
         }
 
-        function renderAdminUsers() {
-            const list = document.getElementById('admin-user-list');
-            list.innerHTML = "";
-            for(let u in db) {
-                list.innerHTML += `
-                    <div class="flex justify-between items-center py-4">
-                        <div>
-                            <p class="font-bold text-sm">${u}</p>
-                            <p class="text-[10px] opacity-50">${db[u].id}</p>
-                        </div>
-                        <span class="text-xs font-bold text-blue-500">${db[u].badge || 'بێ مۆر'}</span>
+        function renderInputLinks() {
+            const area = document.getElementById('links-input-list');
+            area.innerHTML = "";
+            for(let k in db[activeUser].links) {
+                area.innerHTML += `
+                    <div class="flex gap-2">
+                        <input type="text" value="${db[activeUser].links[k]}" oninput="updateLinkVal('${k}', this.value)" placeholder="${k}" class="flex-1 p-3 bg-gray-100 dark:bg-gray-800 rounded-xl text-xs outline-none">
+                        <button onclick="delLink('${k}')" class="text-red-500">X</button>
                     </div>`;
             }
         }
 
-        // --- User Actions ---
-        function saveData() {
-            const u = db[currentActiveUser];
-            u.fname = document.getElementById('u-fname').value;
-            u.lname = document.getElementById('u-lname').value;
-            u.bio = document.getElementById('u-bio').value;
-            save();
-            updatePreview();
+        function updateLinkVal(k, v) { db[activeUser].links[k] = v; saveAndSync(); }
+        function delLink(k) { delete db[activeUser].links[k]; renderInputLinks(); saveAndSync(); }
+
+        function updateImg(e) {
+            const r = new FileReader();
+            r.onload = () => { db[activeUser].img = r.result; saveAndSync(); };
+            r.readAsDataURL(e.target.files[0]);
         }
 
-        function uploadImg(e) {
-            const reader = new FileReader();
-            reader.onload = () => { db[currentActiveUser].img = reader.result; save(); updatePreview(); };
-            reader.readAsDataURL(e.target.files[0]);
-        }
-
-        function resizeImg(v) {
-            db[currentActiveUser].imgSize = v;
-            save();
-            updatePreview();
-        }
-
-        function addNewLink() {
-            const type = document.getElementById('new-link-type').value;
-            if(!db[currentActiveUser].links[type]) {
-                db[currentActiveUser].links[type] = "";
-                save();
-                renderUserLinks();
+        function saveAndSync() {
+            if(activeUser) {
+                db[activeUser].fn = document.getElementById('u-fn').value;
+                db[activeUser].bio = document.getElementById('u-bio').value;
+                localStorage.setItem('klink_v2', JSON.stringify(db));
                 updatePreview();
             }
         }
 
-        function renderUserLinks() {
-            const area = document.getElementById('user-links-inputs');
-            area.innerHTML = "";
-            for(let k in db[currentActiveUser].links) {
-                area.innerHTML += `
-                    <div class="flex gap-2 animate-slide-in">
-                        <div class="bg-gray-100 dark:bg-gray-800 px-3 flex items-center rounded-xl text-[10px] font-bold uppercase w-20">${k}</div>
-                        <input type="text" value="${db[currentActiveUser].links[k]}" oninput="updateLinkVal('${k}', this.value)" placeholder="لینکەکە لێرە دانێ" class="flex-1 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl text-xs outline-none">
-                        <button onclick="deleteLink('${k}')" class="text-red-500 p-2"><i class="fas fa-trash-alt"></i></button>
-                    </div>`;
-            }
-        }
-
-        function updateLinkVal(k, v) { db[currentActiveUser].links[k] = v; save(); updatePreview(); }
-        function deleteLink(k) { delete db[currentActiveUser].links[k]; save(); renderUserLinks(); updatePreview(); }
-
         function updatePreview() {
-            const u = db[currentActiveUser];
-            const screen = document.getElementById('preview-screen');
-            const img = document.getElementById('p-image');
-            const badge = document.getElementById('p-badge');
-
-            // Set Theme
-            if(u.cat === 'tech') screen.className = "w-full h-full p-6 flex flex-col items-center bg-slate-950 text-cyan-400";
-            else if(u.cat === 'food') screen.className = "w-full h-full p-6 flex flex-col items-center bg-orange-50 text-orange-900";
-            else screen.className = "w-full h-full p-6 flex flex-col items-center bg-white dark:bg-gray-900 text-current";
-
-            // Set Profile
-            document.getElementById('p-name').innerText = `${u.fname} ${u.lname}`;
+            const u = db[activeUser];
+            document.getElementById('p-name').innerText = u.fn;
             document.getElementById('p-bio').innerText = u.bio;
-            img.src = u.img || `https://ui-avatars.com/api/?name=${u.fname}&background=10b981&color=fff`;
-            img.style.width = u.imgSize + "px";
-            img.style.height = u.imgSize + "px";
-
-            // Set Badge
-            if(u.badge) {
-                badge.classList.remove('hidden');
-                if(u.badge === 'verified') badge.innerHTML = '<i class="fas fa-check text-[10px] text-white"></i>', badge.className = "absolute -right-1 bottom-1 w-6 h-6 rounded-full flex items-center justify-center bg-blue-500 border-2 border-white dark:border-gray-800";
-                else if(u.badge === 'gold') badge.innerHTML = '<i class="fas fa-check text-[10px] text-black"></i>', badge.className = "absolute -right-1 bottom-1 w-6 h-6 rounded-full flex items-center justify-center bg-yellow-400 border-2 border-white dark:border-gray-800";
-                else badge.innerHTML = '<i class="fas fa-star text-[10px] text-white"></i>', badge.className = "absolute -right-1 bottom-1 w-6 h-6 rounded-full flex items-center justify-center bg-purple-500 border-2 border-white dark:border-gray-800";
-            } else badge.classList.add('hidden');
-
-            // Set Links
-            const list = document.getElementById('p-links-list');
-            list.innerHTML = "";
+            document.getElementById('p-img').src = u.img || `https://ui-avatars.com/api/?name=${u.fn}&background=10b981&color=fff`;
+            
+            const pLinks = document.getElementById('p-links');
+            pLinks.innerHTML = "";
             for(let k in u.links) {
-                if(u.links[k]) {
-                    list.innerHTML += `<div class="w-full py-3 px-4 bg-green-500 text-white rounded-2xl text-center font-bold text-sm shadow-md">${k.toUpperCase()}</div>`;
-                }
+                if(u.links[k]) pLinks.innerHTML += `<div class="w-full py-3 bg-green-500 text-white rounded-xl text-center text-xs font-bold">${k.toUpperCase()}</div>`;
             }
         }
 
-        // --- Core Helpers ---
-        function generateLink() {
-            const url = `${currentActiveUser}.kurdagencylink.com`;
-            document.getElementById('final-url').innerText = url;
-            document.getElementById('copy-area').classList.remove('hidden');
+        function showFinalLink() {
+            // دروستکردنی لینکی ڕاستەقینە کە ئیش بکات
+            const baseUrl = window.location.origin + window.location.pathname;
+            const finalUrl = `${baseUrl}?u=${activeUser}`;
+            document.getElementById('the-url').innerText = finalUrl;
+            document.getElementById('final-link-display').classList.remove('hidden');
         }
 
-        function copyToClipboard() {
-            navigator.clipboard.writeText(document.getElementById('final-url').innerText);
-            alert("لینکەکە کۆپی کرا!");
+        function copyURL() {
+            navigator.clipboard.writeText(document.getElementById('the-url').innerText);
+            alert("لینکەکە کۆپی کرا! ئێستا دەتوانیت بۆ هەر کەسێکی بنێریت.");
         }
-
-        function logout() { location.reload(); }
-        function save() { localStorage.setItem('klink_db', JSON.stringify(db)); }
-        
-        // Theme Toggle
-        document.getElementById('theme-toggle').onclick = () => document.documentElement.classList.toggle('dark');
     </script>
 </body>
 </html>
